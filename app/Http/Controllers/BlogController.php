@@ -128,6 +128,27 @@ public function update(Request $request, Blog $blog)
 }
 
 
+/**
+* destroy
+*
+* @param  mixed $id
+* @return void
+*/
+public function destroy($id)
+{
+  $blog = Blog::findOrFail($id);
+  Storage::disk('local')->delete('public/blogs/'.$blog->image);
+  $blog->delete();
+
+  if($blog){
+     //redirect dengan pesan sukses
+     return redirect()->route('blog.index')->with(['success' => 'Data Berhasil Dihapus!']);
+  }else{
+    //redirect dengan pesan error
+    return redirect()->route('blog.index')->with(['error' => 'Data Gagal Dihapus!']);
+  }
+}
+
 
 
 
